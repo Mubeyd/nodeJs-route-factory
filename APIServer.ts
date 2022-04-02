@@ -1,6 +1,8 @@
 import * as http from "http";
 import express, { Express } from "express";
 import bodyParser from "body-parser";
+import BaseEntity, { EntityTypeInstance } from "./entities/BaseEntity";
+import EntityRouter from "./EntityRouter";
 
 
 export default class APIServer {
@@ -40,6 +42,13 @@ export default class APIServer {
             res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Origin,Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers,Authorization");
             next();
         });
+    }
+
+    public addEntity<T extends BaseEntity>(classRef: EntityTypeInstance<T>): void {
+        const name = Reflect.getMetadata("entity:name", classRef) as string
+        let newEntity = new EntityRouter<T>(name, classRef)
+        this._app.use(`${name}`, newEntity.router)
+
     }
 
 
