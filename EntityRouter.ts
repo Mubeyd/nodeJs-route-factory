@@ -40,12 +40,13 @@ export default class EntityRouter<T extends BaseEntity> {
         this._router.put('/:id', (req, res) => {
             this.updateEntity(req, res);
         })
+
     }
 
 
 
 
-    createEntity(req: Request, res: Response) {
+    private createEntity(req: Request, res: Response) {
         let newEntity = EntityFactory.fromPersistenceObject<T>(
             req.body,
             this.classRef
@@ -59,21 +60,21 @@ export default class EntityRouter<T extends BaseEntity> {
     }
 
 
-    fetchAllEntities(req: Request, res: Response) {
+    private fetchAllEntities(req: Request, res: Response) {
         let data = {}
         data = db.getData(`/${this.name}`)
         res.status(200).json(data);
     }
 
 
-    fetchEntity(req: Request, res: Response) {
+    private fetchEntity(req: Request, res: Response) {
         let data = {}
         data = db.getData(`/${this.name}/${req.params.id}`)
         res.status(200).json(data);
     }
 
 
-    updateEntity(req: Request, res: Response) {
+    private updateEntity(req: Request, res: Response) {
         // Check if th object is exist in the database
         let data = {}
         try {
@@ -84,10 +85,24 @@ export default class EntityRouter<T extends BaseEntity> {
         }
 
         // Update the fields for the object
+
+        // Json Object
         let updatedData = req.body;
 
-        let updatedObj = EntityFactory.fromPersistenceObject<T>(updatedData, this.classRef)
+        // JS Object
+        let updatedObj = EntityFactory.fromPersistenceObject<T>(data, this.classRef)
 
-        // to be continued
+        const propKeys = Object.keys(updatedData)
+
+        for (const prop of propKeys) {
+            updatedObj[prop] = updatedData[prop]
+        }
+
+        // Persist the data to the database
+        db.push(`/${this.name}/${req.params.id}`, updatedData, false);
+        data = db.getData(`/${this.name}/${req.params.id}`)
+        res.status(200).json(data);
+
     }
+
 }
