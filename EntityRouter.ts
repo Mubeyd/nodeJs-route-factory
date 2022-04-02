@@ -41,6 +41,10 @@ export default class EntityRouter<T extends BaseEntity> {
             this.updateEntity(req, res);
         })
 
+        // Delete
+        this._router.delete('/:id', (req, res) => {
+            this.deleteEntity(req, res);
+        })
     }
 
 
@@ -105,4 +109,16 @@ export default class EntityRouter<T extends BaseEntity> {
 
     }
 
+
+    private deleteEntity(req: Request, res: Response) {
+        // Check if th object is exist in the database
+        try {
+            db.delete(`/${this.name}/${req.params.id}`)
+            res.status(200).json({});
+
+        } catch (error) {
+            res.status(404).json({ error: "Object does not exist"})
+            return
+        }
+    }
 }
