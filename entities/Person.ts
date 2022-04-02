@@ -1,7 +1,8 @@
 import { entity, id, persist } from "../decorators/index";
+import BaseEntity from "./BaseEntity";
 
 @entity('people')
-export default class Person {
+export default class Person extends BaseEntity {
     @id
     id: string;
 
