@@ -1,5 +1,15 @@
 {
-    "people": {},
+    "people": {
+        "0cd3789c-e66e-482e-9e91-1c17ce978fd7": {
+            "id": "0cd3789c-e66e-482e-9e91-1c17ce978fd7",
+            "firstName": "Muhammed",
+            "lastName": "Ubeyd",
+            "email": "asd@asd.com",
+            "department": "IT",
+            "mobileNumber": "+0555555",
+            "age": 27
+        }
+    },
     "users": {
         "david": {
             "password": "mypassword",

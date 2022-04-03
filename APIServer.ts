@@ -23,7 +23,7 @@ export default class APIServer {
         this._app = express();
 
         // Set port
-        this._app.set("port", process.env.PORT || 3000);
+        this._app.set("port", process.env.PORT || 8000);
 
         // Add Middleware
         this.configureMiddleware();
@@ -47,7 +47,7 @@ export default class APIServer {
     public addEntity<T extends BaseEntity>(classRef: EntityTypeInstance<T>): void {
         const name = Reflect.getMetadata("entity:name", classRef) as string
         let newEntity = new EntityRouter<T>(name, classRef)
-        this._app.use(`${name}`, newEntity.router)
+        this._app.use(`/${name}`, newEntity.router)
 
     }
 
