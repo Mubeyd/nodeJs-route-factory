@@ -4,7 +4,16 @@
             "id": "0cd3789c-e66e-482e-9e91-1c17ce978fd7",
             "firstName": "Muhammed",
             "lastName": "Ubeyd",
-            "email": "asd@asd.com",
+            "email": "mhd2@ubeyd.com",
+            "department": "IT",
+            "mobileNumber": "+0555555",
+            "age": 25
+        },
+        "7ef88597-cc77-4843-9efa-e41f4f68dceb": {
+            "id": "7ef88597-cc77-4843-9efa-e41f4f68dceb",
+            "firstName": "Ali",
+            "lastName": "Ubeyd",
+            "email": "ali@asd.com",
             "department": "IT",
             "mobileNumber": "+0555555",
             "age": 27
