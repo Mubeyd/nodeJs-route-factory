@@ -37,13 +37,26 @@ function emailValidator(target: any, propertyKey: string) {
 
     const isValid = validator.isEmail(value);
     if (!isValid) {
-        return `The property ${propertyKey} must be a valid email`;
+        return `The property ${propertyKey} must be a valid email.`;
     }
     return;
+}
+
+function requiredValidator(target: any, propertyKey: string) {
+    let value = target[propertyKey];
+    if (value) {
+        return;
+    }
+
+    return `The property ${propertyKey} is required.`;
 }
 
 // Decorators
 
 export function isEmail(target: any, propertyKey: string) {
     addValidation(target, propertyKey, emailValidator);
+}
+
+export function required(target: any, propertyKey: string) {
+    addValidation(target, propertyKey, requiredValidator);
 }
