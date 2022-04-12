@@ -1,4 +1,4 @@
-import { entity, id, persist } from "../decorators/index";
+import { entity, id, isEmail, persist } from "../decorators/index";
 import BaseEntity from "./BaseEntity";
 
 @entity('people')
@@ -12,6 +12,7 @@ export default class Person extends BaseEntity {
     @persist
     lastName: string;
 
+    @isEmail
     @persist
     email: string;
 
