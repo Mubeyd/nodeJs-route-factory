@@ -73,7 +73,7 @@ function integerValidator(target: any, propertyKey: string, validatorOptions: an
 
     const errorMessage = `The property ${propertyKey} is must an integer be between ${validatorOptions.minimum} and  ${validatorOptions.maximum}.`;
 
-    if (Number.isInteger(value)) return errorMessage;
+    if (!Number.isInteger(value)) return errorMessage;
 
     if (value >= validatorOptions.minimum && value <= validatorOptions.maximum) return;
 
