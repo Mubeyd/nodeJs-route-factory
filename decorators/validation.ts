@@ -67,7 +67,7 @@ function lengthValidator(target: any, propertyKey: string, validatorOptions: any
 
 function integerValidator(target: any, propertyKey: string, validatorOptions: any): string | void {
     const value = target[propertyKey];
-    if (value) {
+    if (!value) {
         return;
     }
 
@@ -148,4 +148,6 @@ export function validate(object: any) {
             }
         }
     }
+
+    return errorMap
 }
