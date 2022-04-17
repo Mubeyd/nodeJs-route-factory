@@ -29,7 +29,7 @@ function addValidation(target: any, propertyKey: string, validator: ValidationFu
 
 // Validator Functions
 
-function emailValidator(target: any, propertyKey: string) {
+function emailValidator(target: any, propertyKey: string): string | void {
     let value = target[propertyKey];
     if (value == null) {
         return;
@@ -42,13 +42,27 @@ function emailValidator(target: any, propertyKey: string) {
     return;
 }
 
-function requiredValidator(target: any, propertyKey: string) {
+function requiredValidator(target: any, propertyKey: string): string | void {
     let value = target[propertyKey];
     if (value) {
         return;
     }
 
     return `The property ${propertyKey} is required.`;
+}
+
+function lengthValidator(target: any, propertyKey: string, validatorOptions: any): string | void {
+    const options = {
+        min: validatorOptions.minimum,
+        max: validatorOptions.maximum,
+    }
+    
+    const isValid = validator.isLength(target[propertyKey] + '', options)
+
+    if(!isValid) {
+        return `The property ${propertyKey} is must be between ${validatorOptions.minimum} and  ${validatorOptions.maximum}.`;
+    }
+    return
 }
 
 // Decorators
@@ -59,4 +73,14 @@ export function isEmail(target: any, propertyKey: string) {
 
 export function required(target: any, propertyKey: string) {
     addValidation(target, propertyKey, requiredValidator);
+}
+
+export function length(minimum: number, maximum: number) {
+    const options = {
+        minimum: minimum,
+        maximum: maximum,
+    }
+    return function (target: any, propertyKey: string) {
+    addValidation(target, propertyKey, lengthValidator, options);
+    }
 }
