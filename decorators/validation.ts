@@ -55,14 +55,29 @@ function lengthValidator(target: any, propertyKey: string, validatorOptions: any
     const options = {
         min: validatorOptions.minimum,
         max: validatorOptions.maximum,
-    }
-    
-    const isValid = validator.isLength(target[propertyKey] + '', options)
+    };
 
-    if(!isValid) {
+    const isValid = validator.isLength(target[propertyKey] + "", options);
+
+    if (!isValid) {
         return `The property ${propertyKey} is must be between ${validatorOptions.minimum} and  ${validatorOptions.maximum}.`;
     }
-    return
+    return;
+}
+
+function integerValidator(target: any, propertyKey: string, validatorOptions: any): string | void {
+    const value = target[propertyKey];
+    if (value) {
+        return;
+    }
+
+    const errorMessage = `The property ${propertyKey} is must an integer be between ${validatorOptions.minimum} and  ${validatorOptions.maximum}.`;
+
+    if (Number.isInteger(value)) return errorMessage;
+
+    if (value >= validatorOptions.minimum && value <= validatorOptions.maximum) return;
+
+    return errorMessage;
 }
 
 // Decorators
@@ -79,8 +94,18 @@ export function length(minimum: number, maximum: number) {
     const options = {
         minimum: minimum,
         maximum: maximum,
-    }
+    };
     return function (target: any, propertyKey: string) {
-    addValidation(target, propertyKey, lengthValidator, options);
-    }
+        addValidation(target, propertyKey, lengthValidator, options);
+    };
+}
+
+export function isInteger(minimum: number, maximum: number) {
+    const options = {
+        minimum: minimum,
+        maximum: maximum,
+    };
+    return function (target: any, propertyKey: string) {
+        addValidation(target, propertyKey, integerValidator, options);
+    };
 }
