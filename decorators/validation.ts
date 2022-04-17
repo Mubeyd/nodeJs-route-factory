@@ -60,7 +60,7 @@ function lengthValidator(target: any, propertyKey: string, validatorOptions: any
     const isValid = validator.isLength(target[propertyKey] + "", options);
 
     if (!isValid) {
-        return `The property ${propertyKey} is must be between ${validatorOptions.minimum} and  ${validatorOptions.maximum}.`;
+        return `The property ${propertyKey} is must be a string between ${validatorOptions.minimum} and  ${validatorOptions.maximum}.`;
     }
     return;
 }
@@ -78,6 +78,19 @@ function integerValidator(target: any, propertyKey: string, validatorOptions: an
     if (value >= validatorOptions.minimum && value <= validatorOptions.maximum) return;
 
     return errorMessage;
+}
+
+function phoneValidator(target: any, propertyKey: string): string | void {
+    let value = target[propertyKey];
+    if (value == null) {
+        return;
+    }
+
+    const isValid = validator.isMobilePhone(value);
+    if (!isValid) {
+        return `The property ${propertyKey} must be a valid phone number.`;
+    }
+    return;
 }
 
 // Decorators
@@ -108,4 +121,8 @@ export function isInteger(minimum: number, maximum: number) {
     return function (target: any, propertyKey: string) {
         addValidation(target, propertyKey, integerValidator, options);
     };
+}
+
+export function isPhone(target: any, propertyKey: string) {
+    addValidation(target, propertyKey, phoneValidator);
 }
