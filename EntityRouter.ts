@@ -1,7 +1,7 @@
 import express, { Request, Response, Router } from "express";
 import { v4 } from "uuid";
 import { db } from "./app";
-import { logRoute } from './decorators/index';
+import { logRoute, validate } from './decorators/index';
 import BaseEntity, {
     EntityFactory,
     EntityTypeInstance
@@ -59,6 +59,14 @@ export default class EntityRouter<T extends BaseEntity> {
             this.classRef
         );
 
+        // Validate
+        const errorMap = validate(newEntity)
+
+        if(Object.keys(errorMap).length > 0) {
+            res.status(400).json({error: errorMap})
+            return
+        }
+
         let idProperty = Reflect.getMetadata("entity:id", newEntity);
         newEntity[idProperty] = v4();
 
@@ -106,6 +114,14 @@ export default class EntityRouter<T extends BaseEntity> {
 
         for (const prop of propKeys) {
             updatedObj[prop] = updatedData[prop]
+        }
+
+        // Validate
+        const errorMap = validate(updatedObj)
+        
+        if(Object.keys(errorMap).length > 0) {
+            res.status(400).json({error: errorMap})
+            return
         }
 
         // Persist the data to the database
