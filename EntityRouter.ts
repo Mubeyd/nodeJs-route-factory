@@ -1,7 +1,7 @@
 import express, { Request, Response, Router } from "express";
 import { v4 } from "uuid";
 import { db } from "./app";
-import { logRoute, validate } from './decorators/index';
+import { auth, logRoute, validate } from './decorators/index';
 import BaseEntity, {
     EntityFactory,
     EntityTypeInstance
@@ -51,7 +51,7 @@ export default class EntityRouter<T extends BaseEntity> {
 
 
 
-    
+    @auth("writer")
     @logRoute
     private createEntity(req: Request, res: Response) {
         let newEntity = EntityFactory.fromPersistenceObject<T>(
@@ -74,7 +74,7 @@ export default class EntityRouter<T extends BaseEntity> {
         res.status(200).json(newEntity);
     }
 
-
+    @auth("reader")
     @logRoute
     private fetchAllEntities(req: Request, res: Response) {
         let data = {}
@@ -82,7 +82,7 @@ export default class EntityRouter<T extends BaseEntity> {
         res.status(200).json(data);
     }
 
-
+    @auth("reader")
     @logRoute
     private fetchEntity(req: Request, res: Response) {
         let data = {}
@@ -90,7 +90,7 @@ export default class EntityRouter<T extends BaseEntity> {
         res.status(200).json(data);
     }
 
-
+    @auth("writer")
     @logRoute
     private updateEntity(req: Request, res: Response) {
         // Check if th object is exist in the database
@@ -131,7 +131,7 @@ export default class EntityRouter<T extends BaseEntity> {
 
     }
 
-
+    @auth("deleter")
     @logRoute
     private deleteEntity(req: Request, res: Response) {
         // Check if th object is exist in the database

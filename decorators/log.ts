@@ -1,10 +1,6 @@
 import { Request, Response } from "express";
 
-export function logRoute(
-    target: any,
-    propertyKey: string,
-    propertyDescriptor: PropertyDescriptor
-) {
+export function logRoute(target: any, propertyKey: string, propertyDescriptor: PropertyDescriptor) {
     const original = propertyDescriptor.value;
     propertyDescriptor.value = function (...args: any[]) {
         const req = args[0] as Request;
@@ -12,13 +8,9 @@ export function logRoute(
 
         original.apply(this, args);
 
-        console.log(
-            `${req.ip} [${new Date().toISOString()}] ${req.host} ${
-                req.originalUrl
-            } ${req.method} ${res.statusCode} ${res.statusMessage} HTTP/${
-                req.httpVersion
-            }`
-        );
+        console.log(`${req.ip} [${new Date().toISOString()}] ${req.host} ${req.originalUrl} ${req.method} ${res.statusCode} ${res.statusMessage} HTTP/${req.httpVersion}`);
+
+        // console.log("111111111111111111111111111111", req.headers.authorization);
 
         if (["POST", "PUT"].indexOf(req.method) > -1) {
             console.log(`\tBody: ${JSON.stringify(req.body)}`);
